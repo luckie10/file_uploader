@@ -1,12 +1,12 @@
 import router from "express-promise-router";
 import type { Router, Request, Response, NextFunction } from "express";
 
-const route = router();
+const indexRouter = router();
 
 export default (app: Router) => {
-  app.use("/", route);
+  app.use("/", indexRouter);
 };
 
-route.get("/", async (req: Request, res: Response, next: NextFunction) =>
+indexRouter.get("/", async (req: Request, res: Response, next: NextFunction) =>
   res.send("GET /"),
 );
