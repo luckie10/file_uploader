@@ -19,3 +19,10 @@ model Session {
   data      String
   expiresAt DateTime
 }
+
+model User {
+  id       String   @id @default(dbgenerated("gen_random_uuid()"))
+  createat DateTime @default(now())
+  username String   @unique
+  password String
+}
