@@ -21,8 +21,8 @@ model Session {
 }
 
 model User {
-  id       String   @id @default(dbgenerated("gen_random_uuid()"))
-  createat DateTime @default(now())
-  username String   @unique
-  password String
+  id         String   @id @default(dbgenerated("gen_random_uuid()"))
+  created_at DateTime @default(now())
+  username   String   @unique
+  password   String
 }
