@@ -1,0 +1,23 @@
+<div>
+  <form method="post">
+    <div>
+      <label for="username">Username: </label>
+      <input type="text" name="username" value="<%= username || '' %>">
+    </div>
+    <div>
+      <label for="password">Password: </label>
+      <input type="password" name="password" value="">
+    </div>
+    <div>
+      <label for="confirm_password">Confirm Password: </label>
+      <input type="password" name="confirm_password" value="">
+    </div>
+    <div>
+      <button type="submit">Register</button>
+    </div>
+  </form>
+</div>
+<p>
+  <%- include('partial/error') -%>
+</p>
+
