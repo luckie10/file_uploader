@@ -1,50 +1,38 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/db/client";
 import type { User } from "@prisma/client";
+import { findUser, byUsername, byId } from "@/db/user";
 
-passport.use(
-  new LocalStrategy(async (username, password, done) => {
-    try {
-      const user: User | null = await prisma.user.findUnique({
-        where: {
-          username: username,
-        },
-      });
+export default passport;
 
-      if (!user)
-        return done(null, false, {
-          message: "Incorrect username or password.",
-        });
+const localStrategy = new LocalStrategy(async (username, password, done) => {
+  const result = await findUser(byUsername(username));
+  if (result.isErr()) return done(result.error);
 
-      const match = await bcrypt.compare(password, user.password);
-      if (!match)
-        return done(null, false, {
-          message: "Incorrect username or password.",
-        });
+  const user = result.value;
+  if (!user)
+    return done(null, false, {
+      message: "Incorrect username or password.",
+    });
 
-      return done(null, user);
-    } catch (error) {
-      return done(error);
-    }
-  }),
-);
+  const match = await bcrypt.compare(password, user.password);
+  if (!match)
+    return done(null, false, {
+      message: "Incorrect username or password.",
+    });
+
+  return done(null, user);
+});
+passport.use(localStrategy);
 
 passport.serializeUser((user: User, done) => {
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id: string, done) => {
-  try {
-    const user: User | null = await prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-    });
+  const result = await findUser(byId(id));
+  if (result.isErr()) return done(result.error);
 
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
+  done(null, result.value);
 });

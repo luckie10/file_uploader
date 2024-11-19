@@ -1,15 +1,7 @@
 import { prisma } from "@/db/client";
 import { Prisma } from "@prisma/client";
-import { fromPromise, ResultAsync } from "neverthrow";
-
-export const findUserByUsername = async (username: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      username,
-    },
-  });
-  return user;
-};
+import { Record } from "@prisma/client/runtime/library";
+import { fromPromise, Result } from "neverthrow";
 
 const userSelect = {
   id: true,
@@ -19,13 +11,31 @@ const userSelect = {
 } satisfies Prisma.UserSelect;
 type User = Prisma.UserGetPayload<{ select: typeof userSelect }>;
 
+export const { byId, byUsername } = {
+  byId: (id: string) => ({ id }),
+  byUsername: (username: string) => ({ username }),
+} satisfies Record<string, (...args: any) => Prisma.UserWhereUniqueInput>;
+
+export const findUser = async (
+  args: Prisma.UserWhereUniqueInput,
+): Promise<Result<User, Error>> => {
+  return fromPromise(
+    prisma.user.findUnique({
+      where: args,
+    }),
+    (e: Prisma.PrismaClientKnownRequestError) =>
+      new Error(`Prisma Error: ${e.message}`),
+  );
+};
+
 export const createUser = async (
   args: Prisma.UserCreateInput,
-): Promise<ResultAsync<User, Error>> => {
+): Promise<Result<User, Error>> => {
   return fromPromise(
     prisma.user.create({ data: args }),
     (e: Prisma.PrismaClientKnownRequestError) => {
       if (e.code === "P2002") return new Error("Username already exists.");
+      return new Error(`Prisma Error: ${e.message}`);
     },
   );
 };

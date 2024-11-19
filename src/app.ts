@@ -4,7 +4,8 @@ import path from "path";
 
 import config from "./config";
 import routes from "./routes";
-import sessionConfig from "./config/session";
+import sessionConfig from "@/config/session";
+import passport from "@/config/passport";
 
 const app = express();
 
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(sessionConfig);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/", routes());
 
