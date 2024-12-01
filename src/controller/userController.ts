@@ -2,7 +2,8 @@ import { body, validationResult } from "express-validator";
 import bcryptjs from "bcryptjs";
 
 import type { Request, Response, NextFunction } from "express";
-import { createUser, findUser } from "@/db/user";
+import { createUser } from "@/db/user";
+import passport from "@/config/passport";
 
 export const register_get = async (
   req: Request,
@@ -69,3 +70,40 @@ export const register_post = async (
   });
 };
 
+export async function login_get(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  res.render("login_form");
+}
+
+export const validateLoginInput = [
+  body("username")
+    .trim()
+    .notEmpty()
+    .escape()
+    .withMessage("Username must be specified."),
+  body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password is required.")
+    .escape(),
+];
+
+export async function login_post(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const error = validationResult(req);
+
+  if (!error.isEmpty()) {
+    return res.render("login_form");
+  }
+
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/error",
+  })(req, res, next);
+}

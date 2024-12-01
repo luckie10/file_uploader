@@ -5,6 +5,7 @@ import {
   register_get,
   register_post,
   validateRegisterInput,
+  validateLoginInput,
   login_get,
   login_post,
 } from "@/controller/userController";
@@ -16,3 +17,5 @@ export default (app: Router) => {
 
 userRouter.get("/register", register_get);
 userRouter.post("/register", validateRegisterInput, register_post);
+userRouter.get("/login", login_get);
+userRouter.post("/login", validateLoginInput, login_post);
