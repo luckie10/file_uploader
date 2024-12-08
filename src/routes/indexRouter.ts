@@ -23,8 +23,6 @@ indexRouter.post(
   "/",
   upload.single("file"),
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log("File: ", req.file);
-    console.log("Body: ", req.body);
     res.send(`${req.file.originalname} was uploaded.`);
   },
 );
