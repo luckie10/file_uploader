@@ -38,12 +38,16 @@ model Directory {
   parentId   String?
   children   Directory[] @relation("Subdirectories")
   files      File[]
+
+  @@unique([parentId, name])
 }
 
 model File {
-  id          String     @id @default(dbgenerated("gen_random_uuid()"))
+  id          String    @id @default(dbgenerated("gen_random_uuid()"))
   name        String
-  uploaded_at DateTime   @default(now())
-  Directory   Directory? @relation(fields: [directoryId], references: [id])
-  directoryId String?
+  uploaded_at DateTime  @default(now())
+  directory   Directory @relation(fields: [directoryId], references: [id])
+  directoryId String
+
+  @@unique([directoryId, name])
 }
