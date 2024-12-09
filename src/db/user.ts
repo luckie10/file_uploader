@@ -1,4 +1,4 @@
-import { prisma } from "@/db/client";
+import { client } from "@/db/client";
 import { Prisma } from "@prisma/client";
 import { Record } from "@prisma/client/runtime/library";
 import { fromPromise, Result } from "neverthrow";
@@ -20,7 +20,7 @@ export const findUser = async (
   args: Prisma.UserWhereUniqueInput,
 ): Promise<Result<User, Error>> => {
   return fromPromise(
-    prisma.user.findUnique({
+    client.user.findUnique({
       where: args,
     }),
     (e: Prisma.PrismaClientKnownRequestError) =>
@@ -32,7 +32,7 @@ export const createUser = async (
   args: Prisma.UserCreateInput,
 ): Promise<Result<User, Error>> => {
   return fromPromise(
-    prisma.user.create({ data: args }),
+    client.user.create({ data: args }),
     (e: Prisma.PrismaClientKnownRequestError) => {
       if (e.code === "P2002") return new Error("Username already exists.");
       return new Error(`Prisma Error: ${e.message}`);

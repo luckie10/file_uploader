@@ -2,7 +2,7 @@ import config from ".";
 
 import session from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import { prisma } from "@/db/client";
+import { client } from "@/db/client";
 
 export default session({
   cookie: {
@@ -11,7 +11,7 @@ export default session({
   secret: config.sessionSecret,
   resave: true,
   saveUninitialized: true,
-  store: new PrismaSessionStore(prisma, {
+  store: new PrismaSessionStore(client, {
     checkPeriod: 2 * 60 * 1000, //ms
     dbRecordIdIsSessionId: true,
     dbRecordIdFunction: undefined,
