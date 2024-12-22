@@ -37,3 +37,19 @@ export const createDirectory = async (args: Prisma.DirectoryCreateInput) => {
     handlePrismaError,
   );
 };
+
+export const deleteDirectory = async (
+  where: Prisma.DirectoryWhereUniqueInput,
+): Promise<Result<Directory, Error>> => {
+  return fromPromise(client.directory.delete({ where }), handlePrismaError);
+};
+
+export const updateDirectory = async (
+  where: Prisma.DirectoryWhereUniqueInput,
+  data: Prisma.DirectoryUpdateInput,
+): Promise<Result<Directory, Error>> => {
+  return fromPromise(
+    client.directory.update({ where, data }),
+    handlePrismaError,
+  );
+};

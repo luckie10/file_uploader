@@ -32,6 +32,6 @@ indexRouter.post(
 
 indexRouter.post("/folder/create", createFolder_post);
 indexRouter.get("/folder/delete/:id", deleteFolder_get);
-indexRouter.post("/folder/delete/", deleteFolder_post);
+indexRouter.post("/folder/delete/:id", deleteFolder_post);
 indexRouter.get("/folder/update/:id", updateFolder_get);
-indexRouter.post("/folder/update", updateFolder_post);
+indexRouter.post("/folder/update/:id", updateFolder_post);

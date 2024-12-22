@@ -13,8 +13,8 @@
   <% directories.map(dir => {%>
     <li>
       <%= dir.name %>
-      <a href="">Edit</a>
-      <a href="">Delete</a>
+      <a href="/folder/update/<%= dir.id %>">Edit</a>
+      <a href="/folder/delete/<%= dir.id %>">Delete</a>
     </li>
   <% }) %>
 </ul>
