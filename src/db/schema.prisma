@@ -39,7 +39,7 @@ model Directory {
   children   Directory[] @relation("Subdirectories")
   files      File[]
 
-  @@unique([parentId, name])
+  @@unique([userId, parentId, name])
 }
 
 model File {
