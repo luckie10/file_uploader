@@ -1,7 +1,16 @@
 import router from "express-promise-router";
-import type { Router, Request, Response, NextFunction } from "express";
+import type { Router, Request, Response } from "express";
 import isAuth from "@/middlewares/isAuth";
 import multer from "multer";
+
+import {
+  index_get,
+  createFolder_post,
+  deleteFolder_get,
+  deleteFolder_post,
+  updateFolder_get,
+  updateFolder_post,
+} from "@/controller/indexController";
 
 const upload = multer({ dest: "src/uploads" });
 
@@ -11,18 +20,18 @@ export default (app: Router) => {
   app.use("/", indexRouter);
 };
 
-indexRouter.get(
-  "/",
-  isAuth,
-  async (req: Request, res: Response, next: NextFunction) => {
-    res.render("index");
-  },
-);
+indexRouter.get("/", isAuth, index_get);
 
 indexRouter.post(
   "/",
   upload.single("file"),
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     res.send(`${req.file.originalname} was uploaded.`);
   },
 );
+
+indexRouter.post("/folder/create", createFolder_post);
+indexRouter.get("/folder/delete/:id", deleteFolder_get);
+indexRouter.post("/folder/delete/", deleteFolder_post);
+indexRouter.get("/folder/update/:id", updateFolder_get);
+indexRouter.post("/folder/update", updateFolder_post);

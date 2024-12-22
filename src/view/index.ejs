@@ -9,3 +9,12 @@
     <button type="submit">Add Folder</button>
   </form>
 </div>
+<ul>
+  <% directories.map(dir => {%>
+    <li>
+      <%= dir.name %>
+      <a href="">Edit</a>
+      <a href="">Delete</a>
+    </li>
+  <% }) %>
+</ul>
