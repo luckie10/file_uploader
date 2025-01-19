@@ -1,0 +1,7 @@
+<% directories.map(dir => {%>
+  <li>
+    <a href="/folder/<%= dir.id %>"><%= dir.name %></a>
+    <a href="/folder/update/<%= dir.id %>">Edit</a>
+    <a href="/folder/delete/<%= dir.id %>">Delete</a>
+  </li>
+<% }) %>

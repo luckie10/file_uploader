@@ -10,6 +10,7 @@ import {
   deleteFolder_post,
   updateFolder_get,
   updateFolder_post,
+  folderDetails_get,
 } from "@/controller/indexController";
 
 const upload = multer({ dest: "src/uploads" });
@@ -30,8 +31,9 @@ indexRouter.post(
   },
 );
 
-indexRouter.post("/folder/create", createFolder_post);
 indexRouter.get("/folder/delete/:id", deleteFolder_get);
 indexRouter.post("/folder/delete/:id", deleteFolder_post);
 indexRouter.get("/folder/update/:id", updateFolder_get);
 indexRouter.post("/folder/update/:id", updateFolder_post);
+indexRouter.post("/folder/create", createFolder_post);
+indexRouter.get("/folder/:id", folderDetails_get);

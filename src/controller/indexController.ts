@@ -1,6 +1,6 @@
 import {
   byUniqueId,
-  byUserId,
+  byUniqueParentId,
   createDirectory,
   deleteDirectory,
   getDirectories,
@@ -10,10 +10,12 @@ import {
 import type { Request, Response } from "express";
 
 export const index_get = async (req: Request, res: Response) => {
-  const result = await getDirectories({ where: byUserId(req.body.id) });
+  const result = await getDirectories({
+    where: byUniqueParentId(req.body.id, null),
+  });
   if (result.isErr()) return console.log(result.error);
   const directories = result.value;
-  res.render("index", { directories });
+  res.render("index", { directories, id: req.params.id });
 };
 
 export const createFolder_post = async (req: Request, res: Response) => {
@@ -21,6 +23,9 @@ export const createFolder_post = async (req: Request, res: Response) => {
     name: req.body.name,
     user: {
       connect: { id: req.user.id },
+    },
+    parent: {
+      connect: { id: req.body.parent },
     },
   });
 
@@ -58,4 +63,15 @@ export const updateFolder_post = async (req: Request, res: Response) => {
   if (result.isErr()) return res.send(`Error: ${result.error}`);
   res.redirect("/");
   res.send(`Update folder POST: ${req.params.id}`);
+};
+
+export const folderDetails_get = async (req: Request, res: Response) => {
+  const select = { children: true, files: true };
+  const result = await getDirectory(byUniqueId(req.params.id), select);
+  if (result.isErr()) return res.send("Error: " + result.error);
+
+  res.render("index", {
+    directories: result.value.children,
+    id: req.params.id,
+  });
 };

@@ -4,14 +4,15 @@ import type { Directory } from "@prisma/client";
 import { fromPromise, Result } from "neverthrow";
 import { handlePrismaError } from "./util";
 
-export const { byUniqueId } = {
+export const { byUniqueId, byUniqueParentId } = {
   byUniqueId: (id: string) => ({ id }),
+  byUniqueParentId: (id: string, parentId: string | null) => ({ id, parentId }),
 } satisfies Record<string, (...args: any) => Prisma.DirectoryWhereUniqueInput>;
 
 export const getDirectory = async (
   where: Prisma.DirectoryWhereUniqueInput,
   select?: Prisma.DirectorySelect,
-): Promise<Result<Directory, Error>> => {
+) => {
   return fromPromise(
     client.directory.findUnique({
       where,
