@@ -8,7 +8,9 @@ import {
   validateLoginInput,
   login_get,
   login_post,
+  logout_get,
 } from "@/controller/userController";
+
 const userRouter = router();
 
 export default (app: Router) => {
@@ -19,3 +21,4 @@ userRouter.get("/register", register_get);
 userRouter.post("/register", validateRegisterInput, register_post);
 userRouter.get("/login", login_get);
 userRouter.post("/login", validateLoginInput, login_post);
+userRouter.get("/logout", logout_get);

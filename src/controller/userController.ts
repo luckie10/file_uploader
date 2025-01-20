@@ -107,3 +107,11 @@ export async function login_post(
     failureRedirect: "/error",
   })(req, res, next);
 }
+
+export const logout_get = (req: Request, res: Response, next: NextFunction) => {
+  req.logout((err) => {
+    if (err) return next(err);
+
+    res.redirect("/");
+  });
+};
