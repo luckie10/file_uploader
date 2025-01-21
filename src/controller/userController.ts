@@ -58,6 +58,11 @@ export const register_post = async (
     const result = await createUser({
       username,
       password: hashedPassword,
+      Directories: {
+        create: {
+          name: "root",
+        },
+      },
     });
     if (result.isErr()) {
       return res.render("register_form", {
