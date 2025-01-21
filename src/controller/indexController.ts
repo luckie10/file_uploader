@@ -14,8 +14,8 @@ export const index_get = async (req: Request, res: Response) => {
   const result = await getUserRootDir(req.user.id);
   if (result.isErr()) return console.log(result.error);
 
-  const directories = result.value.children;
-  res.render("index", { directories, id: req.params.id });
+  const { children, id } = result.value;
+  res.render("index", { directories: children, id });
 };
 
 export const createFolder_post = async (req: Request, res: Response) => {
