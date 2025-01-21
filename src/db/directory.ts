@@ -9,6 +9,24 @@ export const { byUniqueId, byUniqueParentId } = {
   byUniqueParentId: (id: string, parentId: string | null) => ({ id, parentId }),
 } satisfies Record<string, (...args: any) => Prisma.DirectoryWhereUniqueInput>;
 
+export const getUserRootDir = async (userId: string) => {
+  return fromPromise(
+    client.directory.findFirst({
+      where: {
+        AND: {
+          userId,
+          parentId: null,
+        },
+      },
+      include: {
+        children: true,
+        files: true,
+      },
+    }),
+    handlePrismaError,
+  );
+};
+
 export const getDirectory = async (
   where: Prisma.DirectoryWhereUniqueInput,
   select?: Prisma.DirectorySelect,

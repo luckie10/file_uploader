@@ -5,16 +5,16 @@ import {
   deleteDirectory,
   getDirectories,
   getDirectory,
+  getUserRootDir,
   updateDirectory,
 } from "@/db/directory";
 import type { Request, Response } from "express";
 
 export const index_get = async (req: Request, res: Response) => {
-  const result = await getDirectories({
-    where: byUniqueParentId(req.body.id, null),
-  });
+  const result = await getUserRootDir(req.user.id);
   if (result.isErr()) return console.log(result.error);
-  const directories = result.value;
+
+  const directories = result.value.children;
   res.render("index", { directories, id: req.params.id });
 };
 
@@ -30,6 +30,7 @@ export const createFolder_post = async (req: Request, res: Response) => {
   });
 
   if (result.isErr()) {
+    console.error(result.error);
     res.send("Error");
   }
 
