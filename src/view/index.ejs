@@ -1,6 +1,7 @@
-<div><%= JSON.stringify(locals) %></div>
+<div><%= JSON.stringify(locals.files) %></div>
 <div>
-  <form enctype="multipart/form-data" method="post">
+  <form enctype="multipart/form-data" method="post" action="/file/upload">
+    <input type="hidden" name="parent" value="<%= id %>">
     <input type="file" name="file">
     <button type="submit">Upload</button>
   </form>
@@ -12,4 +13,5 @@
 </div>
 <ul>
   <%- include('partial/folder_line') -%>
+  <%- include('partial/file_line') -%>
 </ul>

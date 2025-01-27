@@ -1,0 +1,8 @@
+<% files.map(file => {%>
+  <li>
+    f
+    <a href="/file/<%= file.id %>"><%= file.name %></a>
+    <a href="/file/update/<%= file.id %>">Edit</a>
+    <a href="/file/delete/<%= file.id %>">Delete</a>
+  </li>
+<% }) %>
