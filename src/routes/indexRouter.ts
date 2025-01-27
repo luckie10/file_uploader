@@ -17,11 +17,12 @@ const upload = multer({ dest: "src/uploads" });
 
 const indexRouter = router();
 
+indexRouter.use(isAuth);
+
 export default (app: Router) => {
   app.use("/", indexRouter);
 };
 
-indexRouter.get("/", isAuth, index_get);
 
 indexRouter.post(
   "/",
@@ -30,6 +31,7 @@ indexRouter.post(
     res.send(`${req.file.originalname} was uploaded.`);
   },
 );
+indexRouter.get("/", index_get);
 
 indexRouter.get("/folder/delete/:id", deleteFolder_get);
 indexRouter.post("/folder/delete/:id", deleteFolder_post);
