@@ -11,6 +11,7 @@ import {
   updateFolder_get,
   updateFolder_post,
   folderDetails_get,
+  fileUpload_post,
 } from "@/controller/indexController";
 
 const upload = multer({ dest: "src/uploads" });
@@ -23,14 +24,6 @@ export default (app: Router) => {
   app.use("/", indexRouter);
 };
 
-
-indexRouter.post(
-  "/",
-  upload.single("file"),
-  async (req: Request, res: Response) => {
-    res.send(`${req.file.originalname} was uploaded.`);
-  },
-);
 indexRouter.get("/", index_get);
 
 indexRouter.get("/folder/delete/:id", deleteFolder_get);
@@ -39,3 +32,5 @@ indexRouter.get("/folder/update/:id", updateFolder_get);
 indexRouter.post("/folder/update/:id", updateFolder_post);
 indexRouter.post("/folder/create", createFolder_post);
 indexRouter.get("/folder/:id", folderDetails_get);
+
+indexRouter.post("/file/upload", upload.single("file"), fileUpload_post);

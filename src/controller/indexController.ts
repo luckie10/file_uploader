@@ -8,6 +8,7 @@ import {
   getUserRootDir,
   updateDirectory,
 } from "@/db/directory";
+import { createFile } from "@/db/file";
 import type { Request, Response } from "express";
 
 export const index_get = async (req: Request, res: Response) => {
@@ -75,4 +76,24 @@ export const folderDetails_get = async (req: Request, res: Response) => {
     directories: result.value.children,
     id: req.params.id,
   });
+};
+
+export const fileUpload_post = async (req: Request, res: Response) => {
+  const { originalname, path, size } = req.file;
+  const result = await createFile({
+    name: originalname,
+    location: path,
+    size,
+    directory: {
+      connect: {
+        id: req.body.parent,
+      },
+    },
+  });
+
+  if (result.isErr()) {
+    console.error(result.error);
+    return res.send("Error" + result.error);
+  }
+  res.redirect("/folder/" + req.body.parent);
 };
